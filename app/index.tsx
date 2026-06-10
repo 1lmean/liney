@@ -51,7 +51,13 @@ export default function CollectionScreen() {
               </View>
             </View>
           </View>
-          <Avatar size={84} fallback="선" editable onEditPress={() => console.log('edit')} />
+          <Avatar
+            size={100}
+            fallback="선"
+            editable
+            onEditPress={() => console.log('edit')}
+            style={{ alignSelf: 'center' }}
+          />
         </View>
 
         {/* 카드 그리드 */}
@@ -59,15 +65,8 @@ export default function CollectionScreen() {
           {lines.map((line) => (
             <Pressable
               key={line.id}
-              style={[
-                styles.card,
-                {
-                  backgroundColor: palette.surface,
-                  ...shadow.card,
-                },
-              ]}
+              style={[styles.card, { backgroundColor: palette.surface, ...shadow.card }]}
             >
-              {/* 메뉴 버튼 */}
               <TouchableOpacity
                 style={styles.menuBtn}
                 hitSlop={8}
@@ -77,13 +76,9 @@ export default function CollectionScreen() {
                   ···
                 </Text>
               </TouchableOpacity>
-
-              {/* 문장 */}
               <Text variant="bodySerif" style={styles.sentence}>
                 {line.sentence}
               </Text>
-
-              {/* 책 정보 + 날짜 */}
               <View style={styles.cardBottom}>
                 <View style={styles.bookInfo}>
                   <Text variant="caption" weight="bold" color={palette.ink}>
@@ -101,13 +96,22 @@ export default function CollectionScreen() {
           ))}
         </View>
       </ScrollView>
+
+      {/* FAB */}
+      <TouchableOpacity
+        style={[styles.fab, { backgroundColor: palette.ink, ...shadow.fab }]}
+        activeOpacity={0.85}
+        onPress={() => console.log('add')}
+      >
+        <Text style={{ fontSize: 28, color: palette.bg, lineHeight: 32 }}>+</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
   scrollContent: {
-    paddingBottom: spacing.xxl * 2,
+    paddingBottom: 120,
   },
   userSection: {
     flexDirection: 'row',
@@ -120,7 +124,6 @@ const styles = StyleSheet.create({
   userInfo: {
     flex: 1,
     paddingRight: spacing.lg,
-    paddingBottom: spacing.xxl,
   },
   statsRow: {
     flexDirection: 'row',
@@ -161,5 +164,15 @@ const styles = StyleSheet.create({
   bookInfo: {
     flex: 1,
     paddingRight: spacing.sm,
+  },
+  fab: {
+    position: 'absolute',
+    bottom: 36,
+    right: spacing.xl,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });
