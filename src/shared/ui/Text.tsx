@@ -1,6 +1,6 @@
 import { Text as RNText, StyleProp, TextStyle } from 'react-native';
 import { useColorScheme } from 'react-native';
-import { colors } from '@/tokens';
+import { colors } from '@/shared/tokens';
 
 type Variant = 'display' | 'wordmark' | 'title' | 'body' | 'bodySerif' | 'tag' | 'caption';
 type Weight = 'regular' | 'medium' | 'semibold' | 'bold' | 'extrabold';

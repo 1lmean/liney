@@ -1,14 +1,5 @@
-// store/useLineStore.ts
 import { create } from 'zustand';
-
-export interface Line {
-  id: string;
-  sentence: string;
-  bookTitle: string;
-  author?: string;
-  page?: number;
-  savedAt: Date;
-}
+import { Line } from './line.types';
 
 interface LineStore {
   lines: Line[];

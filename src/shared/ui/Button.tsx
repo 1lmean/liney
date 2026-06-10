@@ -1,6 +1,6 @@
 import { ActivityIndicator, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { useColorScheme } from 'react-native';
-import { colors, shadow } from '@/tokens';
+import { colors, shadow } from '@/shared/tokens';
 import { Text } from './Text';
 
 type Variant = 'dark' | 'soft' | 'white';

@@ -4,7 +4,7 @@ import { Stack } from 'expo-router';
 import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import { useColorScheme } from 'react-native';
-import { colors } from '@/tokens';
+import { colors } from '@/shared/tokens';
 
 SplashScreen.preventAutoHideAsync();
 

@@ -1,6 +1,6 @@
 import { View, TextInput, StyleProp, ViewStyle } from 'react-native';
 import { useColorScheme } from 'react-native';
-import { colors } from '@/tokens';
+import { colors } from '@/shared/tokens';
 import { Text } from './Text';
 
 interface InputProps {

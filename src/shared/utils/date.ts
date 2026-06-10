@@ -1,5 +1,3 @@
-// utils/date.ts
-
 export function formatCardDate(date: Date): string {
   const now = new Date();
   const diff = now.getTime() - date.getTime();

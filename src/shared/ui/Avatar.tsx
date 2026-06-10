@@ -1,7 +1,7 @@
 import { View, Image, TouchableOpacity, StyleProp, ViewStyle } from 'react-native';
 import { useColorScheme } from 'react-native';
 import { Feather } from '@expo/vector-icons';
-import { colors, shadow, spacing } from '@/tokens';
+import { colors, shadow } from '@/shared/tokens';
 import { Text } from './Text';
 
 interface AvatarProps {
