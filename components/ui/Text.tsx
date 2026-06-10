@@ -15,7 +15,7 @@ interface TextProps {
 }
 
 const variantClassName: Record<Variant, string> = {
-  display: 'text-[34px] font-extrabold tracking-[-1px] leading-[41px]',
+  display: 'text-[32px] font-extrabold tracking-[-1px] leading-[41px]',
   wordmark: 'font-serif text-[30px] font-bold italic',
   title: 'text-[23px] font-extrabold tracking-[-0.5px]',
   body: 'text-[15px] font-medium leading-[23px]',
