@@ -1,21 +1,35 @@
 {
   "name": "liney",
   "version": "1.0.0",
-  "main": "index.ts",
+  "main": "expo-router/entry",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
-    "web": "expo start --web"
+    "web": "expo start --web",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "expo": "~54.0.34",
+    "expo-router": "~6.0.24",
     "expo-status-bar": "~3.0.9",
+    "moti": "^0.30.0",
+    "nativewind": "^4.2.5",
     "react": "19.1.0",
-    "react-native": "0.81.5"
+    "react-dom": "19.1.0",
+    "react-native": "0.81.5",
+    "react-native-reanimated": "~4.1.7",
+    "react-native-safe-area-context": "~5.6.2",
+    "react-native-screens": "~4.16.0",
+    "react-native-web": "^0.21.2",
+    "zustand": "^5.0.14"
   },
   "devDependencies": {
     "@types/react": "~19.1.0",
+    "eslint-config-prettier": "^10.1.8",
+    "prettier": "^3.8.4",
+    "tailwindcss": "^4.3.0",
     "typescript": "~5.9.2"
   },
   "private": true
