@@ -17,23 +17,26 @@ export const radius = {
 
 export const shadow = {
   chip: {
-    shadowColor: '#28220A',
+    boxShadow: '0px 3px 10px rgba(28,28,27,0.09), 0px 1px 2px rgba(28,28,27,0.05)',
+    shadowColor: '#1C1C1B',
     shadowOffset: { width: 0, height: 3 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.09,
     shadowRadius: 10,
     elevation: 3,
   },
   card: {
-    shadowColor: '#28220A',
+    boxShadow: '0px 8px 26px rgba(28,28,27,0.09)',
+    shadowColor: '#1C1C1B',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.1,
+    shadowOpacity: 0.09,
     shadowRadius: 26,
     elevation: 8,
   },
   fab: {
-    shadowColor: '#000',
+    boxShadow: '0px 10px 26px rgba(0,0,0,0.22)',
+    shadowColor: '#000000',
     shadowOffset: { width: 0, height: 10 },
-    shadowOpacity: 0.28,
+    shadowOpacity: 0.22,
     shadowRadius: 26,
     elevation: 16,
   },

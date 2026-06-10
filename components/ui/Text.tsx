@@ -19,7 +19,7 @@ const variantClassName: Record<Variant, string> = {
   wordmark: 'font-serif text-[30px] font-bold italic',
   title: 'text-[23px] font-extrabold tracking-[-0.5px]',
   body: 'text-[15px] font-medium leading-[23px]',
-  bodySerif: 'font-serif text-[15px] italic leading-[29px]',
+  bodySerif: 'font-serif text-[20px] italic leading-[29px]',
   tag: 'text-sm font-semibold',
   caption: 'text-xs font-semibold',
 };
