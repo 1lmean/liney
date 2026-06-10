@@ -23,7 +23,7 @@ module.exports = {
         'dark-line': '#2C2820',
       },
       fontFamily: {
-        serif: ['PlayfairDisplay_700Italic', 'serif'],
+        serif: ['BuheungJuwon'],
         sans: ['Pretendard', 'system-ui', 'sans-serif'],
       },
       borderRadius: {
