@@ -11,7 +11,26 @@
     },
     "plugins": [
       "expo-router",
-      "expo-font"
-    ]
+      "expo-font",
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "책 페이지를 스캔하기 위해 카메라 접근이 필요해요."
+        }
+      ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "d6615f5f-e388-4486-933a-1d8ef84b4179"
+      }
+    },
+    "owner": "1lmean",
+    "ios": {
+      "bundleIdentifier": "com.1lmean.liney",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    }
   }
 }
