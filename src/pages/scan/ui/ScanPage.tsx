@@ -1,6 +1,7 @@
 import { useRef, useState } from 'react';
 import { View, TouchableOpacity, StyleSheet, useColorScheme } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import { useRouter } from 'expo-router';
 import { NavigationBar } from '@/shared/ui';
 import { Text } from '@/shared/ui';
 import { colors, spacing } from '@/shared/tokens';
@@ -8,6 +9,7 @@ import { colors, spacing } from '@/shared/tokens';
 export default function ScanPage() {
   const scheme = useColorScheme() ?? 'light';
   const palette = colors[scheme];
+  const router = useRouter();
   const [permission, requestPermission] = useCameraPermissions();
   const cameraRef = useRef<CameraView>(null);
   const [isCapturing, setIsCapturing] = useState(false);
@@ -18,7 +20,9 @@ export default function ScanPage() {
     return (
       <View style={[styles.fill, styles.permissionContainer, { backgroundColor: palette.bg }]}>
         <NavigationBar title="촬영" tintColor={palette.ink} />
-        <Text style={[styles.permissionText, { color: palette.inkMuted }]}>카메라 접근 권한이 필요합니다</Text>
+        <Text style={[styles.permissionText, { color: palette.inkMuted }]}>
+          카메라 접근 권한이 필요합니다
+        </Text>
         <TouchableOpacity
           style={[styles.permissionButton, { backgroundColor: palette.ink }]}
           onPress={requestPermission}
@@ -34,7 +38,13 @@ export default function ScanPage() {
     if (isCapturing || !cameraRef.current) return;
     setIsCapturing(true);
     try {
-      await cameraRef.current.takePictureAsync();
+      const photo = await cameraRef.current.takePictureAsync();
+      if (photo) {
+        router.push({
+          pathname: '/select',
+          params: { uri: photo.uri, width: String(photo.width), height: String(photo.height) },
+        });
+      }
     } finally {
       setIsCapturing(false);
     }
