@@ -1,6 +1,9 @@
 import { useRef, useState } from 'react';
-import { View, TouchableOpacity, StyleSheet, useColorScheme } from 'react-native';
+import { View, TouchableOpacity, StyleSheet, useColorScheme, Dimensions } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+
+const SCREEN_WIDTH = Dimensions.get('window').width;
+const CAMERA_HEIGHT = Math.round(SCREEN_WIDTH * (4 / 3));
 import { useRouter } from 'expo-router';
 import { NavigationBar } from '@/shared/ui';
 import { Text } from '@/shared/ui';
@@ -51,9 +54,10 @@ export default function ScanPage() {
   }
 
   return (
-    <View style={styles.fill}>
-      <CameraView ref={cameraRef} style={styles.fill} facing="back" />
+    <View style={styles.container}>
       <NavigationBar title="촬영" />
+      <View style={styles.topSpacer} />
+      <CameraView ref={cameraRef} style={styles.camera} facing="back" />
       <View style={styles.controls}>
         <TouchableOpacity
           style={[styles.shutterRing, isCapturing && styles.shutterRingActive]}
@@ -71,6 +75,14 @@ export default function ScanPage() {
 const styles = StyleSheet.create({
   fill: {
     flex: 1,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: '#000',
+  },
+  camera: {
+    width: SCREEN_WIDTH,
+    height: CAMERA_HEIGHT,
   },
   permissionContainer: {
     justifyContent: 'center',
@@ -90,12 +102,13 @@ const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: '600',
   },
+  topSpacer: {
+    flex: 1,
+  },
   controls: {
-    position: 'absolute',
-    bottom: 56,
-    left: 0,
-    right: 0,
+    flex: 2,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   shutterRing: {
     width: 76,
