@@ -10,7 +10,7 @@ import {
   KeyboardAvoidingView,
   Platform,
 } from 'react-native';
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import TextRecognition, { TextRecognitionScript } from '@react-native-ml-kit/text-recognition';
 import { NavigationBar, Text } from '@/shared/ui';
@@ -34,6 +34,7 @@ export default function SelectPage() {
   const scheme = useColorScheme() ?? 'light';
   const palette = colors[scheme];
   const insets = useSafeAreaInsets();
+  const router = useRouter();
 
   const imageWidth = Number(wParam) || 1;
   const imageHeight = Number(hParam) || 1;
@@ -192,7 +193,7 @@ export default function SelectPage() {
           style={[styles.submitButton, { backgroundColor: canSubmit ? palette.ink : palette.line }]}
           disabled={!canSubmit}
           activeOpacity={0.85}
-          onPress={() => console.log('submit', text)}
+          onPress={() => router.push({ pathname: '/book-info', params: { sentence: text.trim() } })}
         >
           <Text style={[styles.submitText, { color: canSubmit ? palette.bg : palette.inkSubtle }]}>
             저장하기
