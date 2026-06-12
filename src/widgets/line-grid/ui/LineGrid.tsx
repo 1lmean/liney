@@ -1,4 +1,5 @@
 import { View, TouchableOpacity, StyleSheet, useColorScheme } from 'react-native';
+import { useRouter } from 'expo-router';
 import { colors, shadow, spacing } from '@/shared/tokens';
 import { Text } from '@/shared/ui';
 import { useLineStore, LineCard } from '@/entities/line';
@@ -18,12 +19,13 @@ export function LineGrid() {
 export function LineGridFab() {
   const scheme = useColorScheme() ?? 'light';
   const palette = colors[scheme];
+  const router = useRouter();
 
   return (
     <TouchableOpacity
       style={[styles.fab, { backgroundColor: palette.ink, ...shadow.fab }]}
       activeOpacity={0.85}
-      onPress={() => console.log('add')}
+      onPress={() => router.push('/scan')}
     >
       <Text style={{ fontSize: 28, color: palette.bg, lineHeight: 32 }}>+</Text>
     </TouchableOpacity>
