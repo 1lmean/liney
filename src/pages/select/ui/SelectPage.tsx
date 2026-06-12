@@ -121,6 +121,7 @@ export default function SelectPage() {
       style={styles.fill}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
+      <NavigationBar title="문장 선택" tintColor={palette.ink} />
       {/* Image + OCR overlay */}
       <View
         style={styles.imageContainer}
@@ -200,8 +201,6 @@ export default function SelectPage() {
           </Text>
         </TouchableOpacity>
       </View>
-
-      <NavigationBar title="문장 선택" />
     </KeyboardAvoidingView>
   );
 }

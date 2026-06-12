@@ -56,7 +56,6 @@ export default function ScanPage() {
   return (
     <View style={styles.container}>
       <NavigationBar title="촬영" />
-      <View style={styles.topSpacer} />
       <CameraView ref={cameraRef} style={styles.camera} facing="back" />
       <View style={styles.controls}>
         <TouchableOpacity
@@ -101,9 +100,6 @@ const styles = StyleSheet.create({
   permissionButtonText: {
     fontSize: 15,
     fontWeight: '600',
-  },
-  topSpacer: {
-    flex: 1,
   },
   controls: {
     flex: 2,

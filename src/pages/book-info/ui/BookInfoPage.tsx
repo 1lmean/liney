@@ -46,7 +46,7 @@ export default function BookInfoPage() {
       style={styles.fill}
       behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
     >
-      <NavigationBar title="책 정보" />
+      <NavigationBar title="책 정보" tintColor={palette.ink} />
       <ScrollView
         style={styles.fill}
         contentContainerStyle={[styles.content, { paddingBottom: insets.bottom + spacing.xxl }]}
@@ -59,7 +59,12 @@ export default function BookInfoPage() {
         </View>
 
         <View style={styles.form}>
-          <Input label="책 이름" placeholder="책 제목을 입력하세요" value={bookTitle} onChangeText={setBookTitle} />
+          <Input
+            label="책 이름"
+            placeholder="책 제목을 입력하세요"
+            value={bookTitle}
+            onChangeText={setBookTitle}
+          />
           <Input
             label="작가"
             placeholder="작가명 (선택)"
@@ -78,7 +83,12 @@ export default function BookInfoPage() {
         </View>
       </ScrollView>
 
-      <View style={[styles.footer, { paddingBottom: insets.bottom + spacing.md, backgroundColor: palette.bg }]}>
+      <View
+        style={[
+          styles.footer,
+          { paddingBottom: insets.bottom + spacing.md, backgroundColor: palette.bg },
+        ]}
+      >
         <TouchableOpacity
           style={[styles.saveButton, { backgroundColor: canSave ? palette.ink : palette.line }]}
           disabled={!canSave || isSaving}
@@ -86,7 +96,7 @@ export default function BookInfoPage() {
           activeOpacity={0.85}
         >
           <Text style={[styles.saveText, { color: canSave ? palette.bg : palette.inkSubtle }]}>
-            저장하기
+            저장
           </Text>
         </TouchableOpacity>
       </View>

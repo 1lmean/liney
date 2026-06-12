@@ -16,7 +16,11 @@ export function NavigationBar({ title, tintColor = '#FFFFFF' }: NavigationBarPro
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <View style={styles.inner}>
-        <TouchableOpacity style={styles.backButton} onPress={() => router.back()} activeOpacity={0.7}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => router.back()}
+          activeOpacity={0.7}
+        >
           <Text style={[styles.backArrow, { color: tintColor }]}>←</Text>
         </TouchableOpacity>
         {title ? (
@@ -32,15 +36,10 @@ export function NavigationBar({ title, tintColor = '#FFFFFF' }: NavigationBarPro
 
 const styles = StyleSheet.create({
   container: {
-    position: 'absolute',
-    top: 0,
-    left: 0,
-    right: 0,
-    zIndex: 10,
     backgroundColor: 'transparent',
   },
   inner: {
-    height: 44,
+    height: 52,
     flexDirection: 'row',
     alignItems: 'center',
     paddingHorizontal: spacing.lg,
