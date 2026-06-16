@@ -74,6 +74,8 @@ export default function SelectPage() {
   const [isLoading, setIsLoading] = useState(true);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
   const [debugInfo, setDebugInfo] = useState<string>('');
+  const [maxContainerH, setMaxContainerH] = useState(0);
+  const [imageShift, setImageShift] = useState(0);
 
   useEffect(() => {
     if (!uri) {
@@ -162,6 +164,34 @@ export default function SelectPage() {
   const offsetX = (containerSize.width - renderedW) / 2;
   const offsetY = (containerSize.height - renderedH) / 2;
 
+  // containerSize가 줄어들면(키보드 등장) 선택 문장을 가시 영역 중앙에 오도록 offsetY 보정
+  useEffect(() => {
+    const keyboardVisible = maxContainerH > 0 && containerSize.height < maxContainerH - 50;
+
+    if (!keyboardVisible || addedIndices.size === 0 || scale === 0) {
+      setImageShift(0);
+      return;
+    }
+
+    const selectedLines = lines.filter((_, i) => addedIndices.has(i));
+    if (selectedLines.length === 0) return;
+
+    const selTops = selectedLines.map((l) => l.frame.top);
+    const selBottoms = selectedLines.map((l) => l.frame.top + l.frame.height);
+    const selCenterInImage = (Math.min(...selTops) + Math.max(...selBottoms)) / 2;
+
+    // 이미지 좌표계의 선택 중심을 컨테이너 중앙에 맞출 때의 adjustedOffsetY
+    const rawOffsetY = containerSize.height / 2 - selCenterInImage * scale;
+
+    // 이미지가 컨테이너를 항상 커버하도록 클램핑
+    const rH = imageHeight * scale;
+    const minOffsetY = containerSize.height - rH; // 이미지 하단 = 컨테이너 하단
+    const maxOffsetY = 0;                          // 이미지 상단 = 컨테이너 상단
+    const clampedOffsetY = Math.max(minOffsetY, Math.min(maxOffsetY, rawOffsetY));
+
+    setImageShift(clampedOffsetY - offsetY);
+  }, [containerSize, maxContainerH, addedIndices, lines, scale, offsetY, imageHeight]);
+
   const canSubmit = text.trim().length > 0;
 
   return (
@@ -176,14 +206,28 @@ export default function SelectPage() {
         onLayout={(e) => {
           const { width, height } = e.nativeEvent.layout;
           setContainerSize({ width, height });
+          setMaxContainerH((prev) => Math.max(prev, height));
         }}
       >
-        {uri ? <Image source={{ uri }} style={styles.fill} resizeMode="cover" /> : null}
+        {uri && scale > 0 && (
+          <Image
+            source={{ uri }}
+            style={{
+              position: 'absolute',
+              left: offsetX,
+              top: offsetY + imageShift,
+              width: renderedW,
+              height: renderedH,
+            }}
+            resizeMode="stretch"
+          />
+        )}
 
         {scale > 0 &&
           lines.map((line, i) => {
             const added = addedIndices.has(i);
             if (addedIndices.size > 0 && !added) return null;
+            const finalOffsetY = offsetY + imageShift;
             return (
               <TouchableOpacity
                 key={i}
@@ -193,7 +237,7 @@ export default function SelectPage() {
                   styles.highlight,
                   {
                     left: offsetX + line.frame.left * scale,
-                    top: offsetY + line.frame.top * scale,
+                    top: finalOffsetY + line.frame.top * scale,
                     width: line.frame.width * scale,
                     height: Math.max(line.frame.height * scale, 20),
                     backgroundColor: added
