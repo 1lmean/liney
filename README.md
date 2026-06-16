@@ -15,6 +15,7 @@
 | 스타일       | NativeWind (Tailwind CSS)      |
 | 애니메이션   | Moti + React Native Reanimated |
 | 상태관리     | Zustand                        |
+| 백엔드/DB    | Supabase                       |
 | 언어         | TypeScript                     |
 | 패키지매니저 | pnpm                           |
 | 아키텍처     | Feature-Sliced Design (FSD)    |
@@ -27,10 +28,16 @@
 liney/
 ├── app/                        # Expo Router 진입점
 │   ├── _layout.tsx
-│   └── index.tsx
+│   ├── index.tsx               # 컬렉션 메인
+│   ├── scan.tsx                # 카메라 촬영
+│   ├── select.tsx              # 문장 선택 (OCR)
+│   └── book-info.tsx           # 책 정보 입력
 ├── src/
 │   ├── pages/
-│   │   └── collection/         # 메인 컬렉션 화면
+│   │   ├── collection/         # 메인 컬렉션 화면
+│   │   ├── scan/               # 카메라 촬영 화면
+│   │   ├── select/             # OCR 문장 선택 화면
+│   │   └── book-info/          # 책 정보 입력 화면
 │   ├── widgets/
 │   │   ├── user-profile/       # 유저 헤더 섹션
 │   │   └── line-grid/          # 카드 그리드 + FAB
@@ -38,6 +45,7 @@ liney/
 │   │   └── line/               # 문장 도메인 (타입, 스토어, 카드 UI)
 │   └── shared/
 │       ├── ui/                 # 공통 컴포넌트
+│       ├── lib/                # 외부 클라이언트 (Supabase)
 │       ├── tokens/             # 디자인 토큰
 │       └── utils/              # 유틸 함수
 └── assets/
@@ -93,7 +101,7 @@ liney/
 - [x] 프로젝트 셋업 (Expo SDK 54 + NativeWind + Expo Router)
 - [x] 디자인 토큰 정의 (colors · typography · spacing · shadow)
 - [x] 공통 컴포넌트 구현 (Text · Button · Chip · Card · Input · Avatar)
-- [x] `useLineStore` — 문장 CRUD (Zustand)
+- [x] `useLineStore` — 문장 CRUD (Zustand, 인메모리)
 - [x] 메인 컬렉션 화면
   - [x] 유저 프로필 헤더 (이름 · 서브텍스트 · 줄/권 통계 · 아바타)
   - [x] 2열 카드 그리드
@@ -103,15 +111,19 @@ liney/
   - 방금 / N분 전 / N시간 전 / 어제 / N일 전 / MM.DD / N년 전
 - [x] FSD 아키텍처 마이그레이션
 - [x] 다크모드 지원
+- [x] 카메라 촬영 화면 (`ScanPage`)
+- [x] OCR 기반 문장 선택 · 하이라이팅 UI (`SelectPage`)
+- [x] 책 정보 입력 화면 — 제목 · 저자 · 페이지 (`BookInfoPage`)
+- [x] Supabase 클라이언트 셋업 (`shared/lib/supabase.ts`)
+- [x] Supabase `lines` 테이블 + RLS 정책 (본인 데이터만 접근)
+- [x] 익명 로그인 (`signInAnonymously`) — 앱 진입 시 자동 인증
+- [x] `useLineStore` → Supabase 영속화 연동 (fetch / insert / delete / update)
 
-### 🚧 진행 예정
+
+### 📋 진행 예정
 
 #### 핵심 플로우
 
-- [ ] 카메라 촬영 화면
-- [ ] OCR 문장 추출 (Google ML Kit)
-- [ ] 문장 선택 · 하이라이팅 UI
-- [ ] 책 정보 입력 화면 (제목 · 저자 · 페이지)
 - [ ] 책 검색 연동
 - [ ] 문장 수정 · 삭제 (바텀시트 메뉴)
 
