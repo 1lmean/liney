@@ -21,6 +21,29 @@ interface RecognizedLine {
   frame: { left: number; top: number; width: number; height: number };
 }
 
+function splitByPeriod(lines: RecognizedLine[]): RecognizedLine[] {
+  const result: RecognizedLine[] = [];
+  for (const line of lines) {
+    const segments = line.text.split(/[.。]/).map((s) => s.trim()).filter((s) => s.length > 0);
+    if (segments.length <= 1) {
+      result.push(line);
+      continue;
+    }
+    const totalChars = segments.reduce((sum, s) => sum + s.length, 0);
+    let offsetX = 0;
+    for (const seg of segments) {
+      const ratio = seg.length / totalChars;
+      const w = line.frame.width * ratio;
+      result.push({
+        text: seg,
+        frame: { left: line.frame.left + offsetX, top: line.frame.top, width: w, height: line.frame.height },
+      });
+      offsetX += w;
+    }
+  }
+  return result;
+}
+
 export default function SelectPage() {
   const {
     uri,
@@ -90,7 +113,7 @@ export default function SelectPage() {
             }
             return { text: l.text.trim(), frame: f };
           });
-        setLines(extracted);
+        setLines(splitByPeriod(extracted));
       })
       .catch((e) => {
         console.error('[OCR] error:', e);
