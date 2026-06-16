@@ -19,27 +19,31 @@ import { colors, spacing, typography } from '@/shared/tokens';
 interface RecognizedLine {
   text: string;
   frame: { left: number; top: number; width: number; height: number };
+  isSentenceEnd: boolean;
 }
 
-function splitByPeriod(lines: RecognizedLine[]): RecognizedLine[] {
+function splitByPeriod(lines: Omit<RecognizedLine, 'isSentenceEnd'>[]): RecognizedLine[] {
   const result: RecognizedLine[] = [];
   for (const line of lines) {
+    const endsWithPeriod = /[.。]\s*$/.test(line.text);
     const segments = line.text.split(/[.。]/).map((s) => s.trim()).filter((s) => s.length > 0);
     if (segments.length <= 1) {
-      result.push(line);
+      result.push({ ...line, isSentenceEnd: endsWithPeriod });
       continue;
     }
     const totalChars = segments.reduce((sum, s) => sum + s.length, 0);
     let offsetX = 0;
-    for (const seg of segments) {
+    segments.forEach((seg, idx) => {
+      const isLast = idx === segments.length - 1;
       const ratio = seg.length / totalChars;
       const w = line.frame.width * ratio;
       result.push({
         text: seg,
+        isSentenceEnd: isLast ? endsWithPeriod : true,
         frame: { left: line.frame.left + offsetX, top: line.frame.top, width: w, height: line.frame.height },
       });
       offsetX += w;
-    }
+    });
   }
   return result;
 }
@@ -96,7 +100,7 @@ export default function SelectPage() {
         // Transform: 90° CW landscape → portrait
         const needsRotation = imageWidth < imageHeight;
 
-        const extracted: RecognizedLine[] = allLines
+        const extracted: Omit<RecognizedLine, 'isSentenceEnd'>[] = allLines
           .filter((l) => l.text.trim().length > 1 && l.frame != null)
           .map((l) => {
             const f = l.frame!;
@@ -123,9 +127,25 @@ export default function SelectPage() {
   }, [uri]);
 
   function handleSelectLine(index: number) {
-    if (addedIndices.has(index)) return;
-    setAddedIndices((prev) => new Set(prev).add(index));
-    setText((prev) => (prev ? `${prev}\n${lines[index].text}` : lines[index].text));
+    // 온점 기준으로 문장 시작/끝 탐색
+    let start = index;
+    while (start > 0 && !lines[start - 1].isSentenceEnd) start--;
+    let end = index;
+    while (end < lines.length - 1 && !lines[end].isSentenceEnd) end++;
+
+    // 이미 선택된 문장이면 무시
+    for (let i = start; i <= end; i++) {
+      if (addedIndices.has(i)) return;
+    }
+
+    setAddedIndices((prev) => {
+      const next = new Set(prev);
+      for (let i = start; i <= end; i++) next.add(i);
+      return next;
+    });
+
+    const sentenceText = lines.slice(start, end + 1).map((l) => l.text).join(' ');
+    setText((prev) => (prev ? `${prev}\n${sentenceText}` : sentenceText));
   }
 
   const scale =
