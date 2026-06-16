@@ -29,10 +29,10 @@ export default function BookInfoPage() {
 
   const canSave = bookTitle.trim().length > 0;
 
-  function handleSave() {
+  async function handleSave() {
     if (!canSave || isSaving) return;
     setIsSaving(true);
-    addLine({
+    await addLine({
       sentence: sentence ?? '',
       bookTitle: bookTitle.trim(),
       author: author.trim() || undefined,
@@ -67,7 +67,7 @@ export default function BookInfoPage() {
           />
           <Input
             label="작가"
-            placeholder="작가명 (선택)"
+            placeholder="작가명"
             value={author}
             onChangeText={setAuthor}
             style={styles.inputGap}
