@@ -68,6 +68,8 @@ export default function SelectPage() {
 
   const [lines, setLines] = useState<RecognizedLine[]>([]);
   const [addedIndices, setAddedIndices] = useState<Set<number>>(new Set());
+  const [sentenceStarts, setSentenceStarts] = useState<Set<number>>(new Set());
+  const [sentenceEnds, setSentenceEnds] = useState<Set<number>>(new Set());
   const [text, setText] = useState('');
   const [isLoading, setIsLoading] = useState(true);
   const [containerSize, setContainerSize] = useState({ width: 0, height: 0 });
@@ -143,6 +145,8 @@ export default function SelectPage() {
       for (let i = start; i <= end; i++) next.add(i);
       return next;
     });
+    setSentenceStarts((prev) => new Set(prev).add(start));
+    setSentenceEnds((prev) => new Set(prev).add(end));
 
     const joined = lines.slice(start, end + 1).map((l) => l.text.trim()).join('');
     const sentenceText = lines[end].isSentenceEnd ? `${joined}.` : joined;
@@ -179,6 +183,7 @@ export default function SelectPage() {
         {scale > 0 &&
           lines.map((line, i) => {
             const added = addedIndices.has(i);
+            if (addedIndices.size > 0 && !added) return null;
             return (
               <TouchableOpacity
                 key={i}
@@ -192,12 +197,20 @@ export default function SelectPage() {
                     width: line.frame.width * scale,
                     height: Math.max(line.frame.height * scale, 20),
                     backgroundColor: added
-                      ? 'rgba(251, 191, 36, 0.45)'
+                      ? 'rgba(125, 202, 254, 0.35)'
                       : 'rgba(255, 255, 255, 0.15)',
-                    borderColor: added ? 'rgba(251, 191, 36, 0.9)' : 'rgba(255, 255, 255, 0.4)',
+                    borderColor: added ? '#7dcafe' : 'rgba(255, 255, 255, 0.4)',
+                    borderWidth: added ? 1.5 : 0.5,
                   },
                 ]}
-              />
+              >
+                {added && sentenceStarts.has(i) && (
+                  <View style={[styles.handle, styles.handleLeft]} />
+                )}
+                {added && sentenceEnds.has(i) && (
+                  <View style={[styles.handle, styles.handleRight]} />
+                )}
+              </TouchableOpacity>
             );
           })}
 
@@ -260,8 +273,23 @@ const styles = StyleSheet.create({
   },
   highlight: {
     position: 'absolute',
-    borderWidth: 1.5,
     borderRadius: 3,
+    overflow: 'visible',
+  },
+  handle: {
+    position: 'absolute',
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    backgroundColor: '#7dcafe',
+    top: '50%',
+    marginTop: -4,
+  },
+  handleLeft: {
+    left: -4,
+  },
+  handleRight: {
+    right: -4,
   },
   loadingOverlay: {
     ...StyleSheet.absoluteFillObject,
