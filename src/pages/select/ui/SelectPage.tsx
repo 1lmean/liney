@@ -144,7 +144,8 @@ export default function SelectPage() {
       return next;
     });
 
-    const sentenceText = lines.slice(start, end + 1).map((l) => l.text).join(' ');
+    const joined = lines.slice(start, end + 1).map((l) => l.text.trim()).join('');
+    const sentenceText = lines[end].isSentenceEnd ? `${joined}.` : joined;
     setText((prev) => (prev ? `${prev}\n${sentenceText}` : sentenceText));
   }
 
